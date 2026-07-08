@@ -1,6 +1,6 @@
 # Composio take-home - 100-app API research
 
-**Live case study:** `site/index.html` (open directly, or deploy — see below)
+**Live case study:** `docs/index.html` (open directly, or deploy — see below)
 **Dataset:** `data/apps.json` (100 rows, the full schema)
 **Agent:** `agent/research_agent.py`
 **Verification:** `verification/verification.json`
