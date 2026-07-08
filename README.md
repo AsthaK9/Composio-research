@@ -1,4 +1,4 @@
-# Composio take-home — 100-app API research
+# Composio take-home - 100-app API research
 
 **Live case study:** `site/index.html` (open directly, or deploy — see below)
 **Dataset:** `data/apps.json` (100 rows, the full schema)
@@ -17,7 +17,7 @@ agent/
 verification/
   verification.json   9-app deep-verification sample: pass-1 vs pass-2 per field,
                        plus the apps the agent honestly couldn't resolve
-site/
+docs/
   index.html           the single-page case study (findings, patterns, agent,
                         proof, verification — all in one page, no build step)
 ```
@@ -90,11 +90,11 @@ directly. That's a half-day follow-up, not a rebuild.
 
 ## Deploying the case study
 
-`site/index.html` is a single self-contained file (inline CSS/JS, data
+`docs/index.html` is a single self-contained file (inline CSS/JS, data
 embedded) — no build step. To get a live link, the fastest options are:
 
 - **GitHub Pages**: push this repo, enable Pages on the `main` branch,
-  point it at `/site`, done.
-- **Netlify/Vercel drop**: drag the `site/` folder onto either dashboard.
-- **Local**: just open `site/index.html` in a browser — it renders fully
+  point it at `/docs`, done.
+- **Netlify/Vercel drop**: drag the `docs/` folder onto either dashboard.
+- **Local**: just open `docs/index.html` in a browser — it renders fully
   offline since all data is embedded, no API calls at runtime.
