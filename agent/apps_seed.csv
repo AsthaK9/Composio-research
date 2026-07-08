@@ -1,0 +1,101 @@
+id,name,category
+1,Salesforce,CRM and Sales
+2,HubSpot,CRM and Sales
+3,Pipedrive,CRM and Sales
+4,Attio,CRM and Sales
+5,Twenty,CRM and Sales
+6,Podio,CRM and Sales
+7,Zoho CRM,CRM and Sales
+8,Close,CRM and Sales
+9,Copper,CRM and Sales
+10,DealCloud,CRM and Sales
+11,Zendesk,Support and Helpdesk
+12,Intercom,Support and Helpdesk
+13,Freshdesk,Support and Helpdesk
+14,Front,Support and Helpdesk
+15,Pylon,Support and Helpdesk
+16,LiveAgent,Support and Helpdesk
+17,Plain,Support and Helpdesk
+18,Help Scout,Support and Helpdesk
+19,Gorgias,Support and Helpdesk
+20,Gladly,Support and Helpdesk
+21,Slack,Communications and Messaging
+22,Twilio,Communications and Messaging
+23,Zoho Cliq,Communications and Messaging
+24,Lark (Larksuite),Communications and Messaging
+25,Pumble,Communications and Messaging
+26,Discord,Communications and Messaging
+27,Telegram,Communications and Messaging
+28,WhatsApp Business,Communications and Messaging
+29,Aircall,Communications and Messaging
+30,Vonage,Communications and Messaging
+31,Google Ads,"Marketing, Ads, Email and Social"
+32,Meta Ads,"Marketing, Ads, Email and Social"
+33,LinkedIn Ads,"Marketing, Ads, Email and Social"
+34,GoHighLevel,"Marketing, Ads, Email and Social"
+35,Mailchimp,"Marketing, Ads, Email and Social"
+36,Klaviyo,"Marketing, Ads, Email and Social"
+37,systeme.io,"Marketing, Ads, Email and Social"
+38,Pinterest,"Marketing, Ads, Email and Social"
+39,Threads (Meta),"Marketing, Ads, Email and Social"
+40,SendGrid,"Marketing, Ads, Email and Social"
+41,Shopify,Ecommerce
+42,WooCommerce,Ecommerce
+43,BigCommerce,Ecommerce
+44,Salesforce Commerce Cloud,Ecommerce
+45,Magento (Adobe Commerce),Ecommerce
+46,Squarespace,Ecommerce
+47,Ecwid,Ecommerce
+48,Gumroad,Ecommerce
+49,Amazon Selling Partner,Ecommerce
+50,fanbasis,Ecommerce
+51,DataForSEO,"Data, SEO and Scraping"
+52,SE Ranking,"Data, SEO and Scraping"
+53,Ahrefs,"Data, SEO and Scraping"
+54,MrScraper,"Data, SEO and Scraping"
+55,Apify,"Data, SEO and Scraping"
+56,Firecrawl,"Data, SEO and Scraping"
+57,Bright Data,"Data, SEO and Scraping"
+58,Sherlock,"Data, SEO and Scraping"
+59,Waterfall.io,"Data, SEO and Scraping"
+60,Clay,"Data, SEO and Scraping"
+61,GitHub,"Developer, Infra and Data platforms"
+62,Vercel,"Developer, Infra and Data platforms"
+63,Netlify,"Developer, Infra and Data platforms"
+64,Cloudflare,"Developer, Infra and Data platforms"
+65,Supabase,"Developer, Infra and Data platforms"
+66,Neo4j,"Developer, Infra and Data platforms"
+67,Snowflake,"Developer, Infra and Data platforms"
+68,MongoDB Atlas,"Developer, Infra and Data platforms"
+69,Datadog,"Developer, Infra and Data platforms"
+70,Sentry,"Developer, Infra and Data platforms"
+71,Notion,Productivity and Project Management
+72,Airtable,Productivity and Project Management
+73,Linear,Productivity and Project Management
+74,Jira,Productivity and Project Management
+75,Asana,Productivity and Project Management
+76,Monday.com,Productivity and Project Management
+77,ClickUp,Productivity and Project Management
+78,Coda,Productivity and Project Management
+79,Smartsheet,Productivity and Project Management
+80,Harvest,Productivity and Project Management
+81,Stripe,Finance and Fintech
+82,Plaid,Finance and Fintech
+83,Binance,Finance and Fintech
+84,Paygent Connect,Finance and Fintech
+85,iPayX,Finance and Fintech
+86,QuickBooks,Finance and Fintech
+87,Xero,Finance and Fintech
+88,Brex,Finance and Fintech
+89,Ramp,Finance and Fintech
+90,PitchBook,Finance and Fintech
+91,NotebookLM,"AI, Research and Media-native"
+92,Otter AI,"AI, Research and Media-native"
+93,Fathom,"AI, Research and Media-native"
+94,Consensus,"AI, Research and Media-native"
+95,Reducto,"AI, Research and Media-native"
+96,Devin,"AI, Research and Media-native"
+97,higgsfield,"AI, Research and Media-native"
+98,Mermaid CLI,"AI, Research and Media-native"
+99,YouTube Transcript,"AI, Research and Media-native"
+100,Grain,"AI, Research and Media-native"

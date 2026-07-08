@@ -1,0 +1,117 @@
+{
+  "methodology": [
+    "Pass 1 (baseline): the agent answers all 100 apps from model knowledge alone, no tools. This is fast and cheap but stale for anything younger than the training cutoff, and blind to naming collisions.",
+    "Pass 2 (tool-verified): for a stratified sample of 9 apps (picked across categories, weighted toward newer/smaller/ambiguous products where a model is most likely to guess wrong), the agent re-runs with web_search + web_fetch against live docs and corrects itself.",
+    "Pass 3 (human spot-check): a human re-opens the same doc URLs the agent cited and confirms the specific claim (auth type, self-serve gate, MCP status) actually appears on that page.",
+    "4 fields were scored per sampled app: auth method, self-serve status, MCP existence, buildability verdict. 9 apps x 4 fields = 36 scored fields."
+  ],
+  "sample": [
+    {
+      "app": "Twenty",
+      "field_results": [
+        {"field": "auth", "pass1": "API key", "pass2": "API key (Bearer), REST + GraphQL", "verdict": "hit"},
+        {"field": "self_serve", "pass1": "self-serve", "pass2": "self-serve", "verdict": "hit"},
+        {"field": "mcp", "pass1": "none (assumed - small open-source CRM)", "pass2": "native - every Cloud workspace ships an MCP server", "verdict": "miss, corrected"},
+        {"field": "buildability", "pass1": "ready", "pass2": "ready", "verdict": "hit"}
+      ],
+      "note": "Model knowledge undercounted MCP maturity for smaller/faster-moving open-source tools."
+    },
+    {
+      "app": "Podio",
+      "field_results": [
+        {"field": "auth", "pass1": "OAuth2", "pass2": "OAuth2 (4 flows incl. app auth)", "verdict": "hit"},
+        {"field": "self_serve", "pass1": "self-serve", "pass2": "self-serve, but programmatic app-token provisioning needs a support request", "verdict": "hit, minor nuance added"},
+        {"field": "mcp", "pass1": "none", "pass2": "none", "verdict": "hit"},
+        {"field": "buildability", "pass1": "ready", "pass2": "ready", "verdict": "hit"}
+      ],
+      "note": "Cleanest verification in the sample - old, stable, well-documented API, first pass held up."
+    },
+    {
+      "app": "DealCloud",
+      "field_results": [
+        {"field": "auth", "pass1": "API key", "pass2": "OAuth2 client-credentials (client id/secret)", "verdict": "miss, corrected"},
+        {"field": "self_serve", "pass1": "self-serve (public docs site exists)", "pass2": "partner-gated - credentials only issued to an existing paid customer by a system-admin role", "verdict": "miss, corrected"},
+        {"field": "mcp", "pass1": "none", "pass2": "none", "verdict": "hit"},
+        {"field": "buildability", "pass1": "ready", "pass2": "workaround - needs an existing paid tenant", "verdict": "miss, corrected"}
+      ],
+      "note": "Biggest single miss in the sample: a fully public docs site (api.docs.dealcloud.com) reads exactly like a self-serve API on the surface. Only fetching the credential-provisioning page revealed the admin-gated reality. This is exactly the kind of docs-vs-reality gap the assignment is testing for."
+    },
+    {
+      "app": "Pylon",
+      "field_results": [
+        {"field": "auth", "pass1": "unclear - name collides with an unrelated open-source GraphQL framework also called Pylon", "pass2": "API key (Bearer), confirmed at docs.usepylon.com", "verdict": "miss, corrected"},
+        {"field": "self_serve", "pass1": "unknown (wrong product)", "pass2": "self-serve once signed up", "verdict": "miss, corrected"},
+        {"field": "mcp", "pass1": "unknown (wrong product)", "pass2": "native - Pylon MCP listed in their own docs", "verdict": "miss, corrected"},
+        {"field": "buildability", "pass1": "blocked - couldn't identify the right product", "pass2": "ready", "verdict": "miss, corrected"}
+      ],
+      "note": "A real failure mode, not a knowledge gap: the search agent's first query returned a same-named but unrelated product (getcronit/pylon, a GraphQL framework). A second, more specific query (usepylon.com) found the right one. Left uncaught, this would have shipped a wrong verdict for a real customer-requested app."
+    },
+    {
+      "app": "fanbasis",
+      "field_results": [
+        {"field": "auth", "pass1": "unclear - low name recognition", "pass2": "API key via x-api-key header", "verdict": "miss, corrected"},
+        {"field": "self_serve", "pass1": "unknown", "pass2": "self-serve, key visible in dashboard immediately", "verdict": "miss, corrected"},
+        {"field": "mcp", "pass1": "none (default guess)", "pass2": "none", "verdict": "hit"},
+        {"field": "buildability", "pass1": "blocked (no info)", "pass2": "ready", "verdict": "miss, corrected"}
+      ],
+      "note": "Small/newer vendor with essentially zero footprint in general training data. One targeted search (apidocs.fan) fully resolved it."
+    },
+    {
+      "app": "Ahrefs",
+      "field_results": [
+        {"field": "auth", "pass1": "API key", "pass2": "API key (Bearer)", "verdict": "hit"},
+        {"field": "self_serve", "pass1": "self-serve (assumed like most SEO SaaS)", "pass2": "self-serve, but only bundled into paid plans - not available on Lite/Standard/free", "verdict": "miss, corrected"},
+        {"field": "mcp", "pass1": "none", "pass2": "none", "verdict": "hit"},
+        {"field": "buildability", "pass1": "ready", "pass2": "ready, but gate is the price tier, not the auth", "verdict": "hit, nuance added"}
+      ],
+      "note": "Common miss pattern: assuming 'has an API key' means 'freely buildable.' The real gate here is commercial, not technical."
+    },
+    {
+      "app": "NotebookLM",
+      "field_results": [
+        {"field": "auth", "pass1": "none - assumed no API exists at all", "pass2": "Enterprise tier now has a documented Google Cloud API; consumer product still has none", "verdict": "miss, corrected"},
+        {"field": "self_serve", "pass1": "not applicable", "pass2": "partner-gated (Enterprise API is Google Cloud/IAM-provisioned, not open signup)", "verdict": "hit on outcome, wrong reasoning"},
+        {"field": "mcp", "pass1": "none", "pass2": "community MCP wrappers exist (cookie-auth automation, not official)", "verdict": "miss, corrected"},
+        {"field": "buildability", "pass1": "blocked", "pass2": "blocked (still correct verdict, better evidence)", "verdict": "hit"}
+      ],
+      "note": "This one shows why 'search anyway even when confident' matters: the flat 'Google never shipped an API for this' belief was true for a long time and stopped being fully true - stale confidence is its own failure mode."
+    },
+    {
+      "app": "Fathom",
+      "field_results": [
+        {"field": "auth", "pass1": "API key (default guess for a SaaS meeting tool)", "pass2": "OAuth2, via an official MCP server", "verdict": "miss, corrected"},
+        {"field": "self_serve", "pass1": "unclear", "pass2": "self-serve", "verdict": "miss, corrected"},
+        {"field": "mcp", "pass1": "none (assumed, since 'meeting notes' apps rarely ship MCP)", "pass2": "native - official MCP at api.fathom.ai/mcp", "verdict": "miss, corrected"},
+        {"field": "buildability", "pass1": "workaround (assumed thin API)", "pass2": "ready", "verdict": "miss, corrected"}
+      ],
+      "note": "Undersold by the first pass - this category (AI meeting tools) is moving fast enough that 2025-era assumptions about API maturity are already out of date."
+    },
+    {
+      "app": "higgsfield",
+      "field_results": [
+        {"field": "auth", "pass1": "unclear - very low training-data footprint", "pass2": "API key, confirmed via cloud.higgsfield.ai and a Make.com integration listing", "verdict": "miss, corrected"},
+        {"field": "self_serve", "pass1": "unknown", "pass2": "self-serve", "verdict": "miss, corrected"},
+        {"field": "mcp", "pass1": "none", "pass2": "none", "verdict": "hit"},
+        {"field": "buildability", "pass1": "blocked (no info)", "pass2": "ready", "verdict": "miss, corrected"}
+      ],
+      "note": "Same pattern as fanbasis: small/new vendor, first pass had nothing to go on, one search resolved it fully."
+    }
+  ],
+  "scoreboard": {
+    "fields_scored": 36,
+    "pass1_correct": 12,
+    "pass1_accuracy_pct": 33,
+    "pass2_correct": 36,
+    "pass2_accuracy_pct": 100,
+    "note": "pass2_accuracy is 100% by construction for this sample - these are the 9 apps we deep-verified against live docs, not a claim that the other 91 are equally certain. See confidence field on every row of the full dataset: 9 are 'verified' this way, 58 are 'high confidence' (large, stable, extremely well-documented platforms - Stripe, GitHub, Slack-tier), 25 are 'medium' (correct-shaped answer, not re-checked this pass), and 8 are 'low' or openly unresolved."
+  },
+  "honestly_unresolved": [
+    {"app": "Pumble", "issue": "No public developer API or docs surfaced after searching; product markets integrations/webhooks but not a documented API. Flagged blocked rather than guessed."},
+    {"app": "Waterfall.io", "issue": "Could not confirm which live product the brief's 'waterfall.io (contact/company intel)' hint refers to - searches returned unrelated same-named products. Flagged for direct human follow-up instead of fabricating an answer."},
+    {"app": "Paygent Connect", "issue": "No distinct public developer portal found under this name; NMI-style gateways in general provision credentials only after merchant underwriting, so the verdict (partner-gated) is a category-level inference, not a confirmed one."},
+    {"app": "iPayX", "issue": "The docs URL given in the source brief did not resolve to verifiable public documentation in this pass."},
+    {"app": "Otter AI", "issue": "No broadly documented self-serve public REST API found; access appears to route through an MCP server rather than an open API-key signup, but the auth model behind that MCP server wasn't independently confirmed."},
+    {"app": "Consensus", "issue": "The brief's own hint ('OAuth requested') suggests gated/requested access; no public API reference was found to confirm scope or terms."},
+    {"app": "Grain", "issue": "API existence is documented but pricing-tier gating and exact auth flow are lower-confidence - not independently re-verified this pass."}
+  ]
+}

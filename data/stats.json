@@ -1,0 +1,109 @@
+{
+  "total": 100,
+  "auth": {
+    "OAuth2": 62,
+    "API key / token": 28,
+    "Basic auth": 3,
+    "Other / unclear": 4,
+    "No auth (local/CLI)": 3
+  },
+  "self_serve": {
+    "self_serve": 74,
+    "partner_gated": 9,
+    "not_applicable": 5,
+    "approval": 7,
+    "self_serve_paid": 5
+  },
+  "buildability": {
+    "ready": 77,
+    "workaround": 17,
+    "blocked": 6
+  },
+  "mcp": {
+    "community": 28,
+    "native": 27,
+    "none": 45
+  },
+  "categories": [
+    {
+      "category": "Developer, Infra and Data platforms",
+      "n": 10,
+      "ready": 9,
+      "workaround": 1,
+      "blocked": 0,
+      "self_serve_pct": 100
+    },
+    {
+      "category": "Productivity and Project Management",
+      "n": 10,
+      "ready": 10,
+      "workaround": 0,
+      "blocked": 0,
+      "self_serve_pct": 100
+    },
+    {
+      "category": "CRM and Sales",
+      "n": 10,
+      "ready": 9,
+      "workaround": 1,
+      "blocked": 0,
+      "self_serve_pct": 90
+    },
+    {
+      "category": "Support and Helpdesk",
+      "n": 10,
+      "ready": 9,
+      "workaround": 1,
+      "blocked": 0,
+      "self_serve_pct": 90
+    },
+    {
+      "category": "Communications and Messaging",
+      "n": 10,
+      "ready": 8,
+      "workaround": 1,
+      "blocked": 1,
+      "self_serve_pct": 80
+    },
+    {
+      "category": "Ecommerce",
+      "n": 10,
+      "ready": 8,
+      "workaround": 2,
+      "blocked": 0,
+      "self_serve_pct": 80
+    },
+    {
+      "category": "Data, SEO and Scraping",
+      "n": 10,
+      "ready": 7,
+      "workaround": 2,
+      "blocked": 1,
+      "self_serve_pct": 80
+    },
+    {
+      "category": "Marketing, Ads, Email and Social",
+      "n": 10,
+      "ready": 6,
+      "workaround": 4,
+      "blocked": 0,
+      "self_serve_pct": 60
+    },
+    {
+      "category": "AI, Research and Media-native",
+      "n": 10,
+      "ready": 7,
+      "workaround": 2,
+      "blocked": 1,
+      "self_serve_pct": 60
+    },
+    {
+      "category": "Finance and Fintech",
+      "n": 10,
+      "ready": 4,
+      "workaround": 3,
+      "blocked": 3,
+      "self_serve_pct": 50
+    }
+  ]
+}
