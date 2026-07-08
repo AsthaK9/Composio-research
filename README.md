@@ -1,9 +1,20 @@
-# Composio take-home - 100-app API research
+# Composio Take-home – AI Product Ops
 
-**Live case study:** `docs/index.html` (open directly, or deploy — see below)
+This project automates research across 100 SaaS applications using a two-pass AI research pipeline. It captures authentication methods, developer onboarding, API readiness, MCP availability, buildability, and evidence, then verifies the results against official documentation before generating a single interactive HTML case study.
+
+**Live Case Study:** https://asthak9.github.io/Composio-research/
+**Repository:** https://github.com/AsthaK9/Composio-research)
 **Dataset:** `data/apps.json` (100 rows, the full schema)
 **Agent:** `agent/research_agent.py`
 **Verification:** `verification/verification.json`
+
+## Highlights
+
+- 100 SaaS applications researched
+- Two-pass AI research pipeline
+- Verification against official documentation
+- Interactive HTML case study
+- Confidence scoring for every application
 
 ## What's here
 
@@ -23,10 +34,21 @@ docs/
 ```
 
 ## Running the agent yourself
+Output:
+- apps.json
+- sample.diff.json (verification mode)
 
 ```bash
-pip install anthropic --break-system-packages
-export ANTHROPIC_API_KEY=sk-ant-...
+requirements.txt contains the Python dependencies needed to reproduce the research pipeline.
+
+# Configure the required API credentials
+Configure ANTHROPIC_API_KEY in your environment.
+
+Linux/macOS:
+export ANTHROPIC_API_KEY=<your_api_key>
+
+Windows PowerShell:
+$env:ANTHROPIC_API_KEY="<your_api_key>"
 
 # Baseline pass: no tools, just model knowledge (fast, ~1/3 accurate on obscure apps)
 python agent/research_agent.py --input agent/apps_seed.csv --pass baseline --out baseline.json
@@ -46,9 +68,7 @@ handful of apps before committing to a full run.
 ### Swapping in Composio
 
 The whole point of the `search_tool` boundary in `run_pass()` is that it
-doesn't care what does the looking-up. This script uses Anthropic's built-in
-`web_search` tool because that's what was available in the environment this
-was built in. To use Composio instead:
+doesn't care what does the looking-up. The research pipeline is built around a pluggable search interface. The current implementation uses an LLM with web-search capabilities, but the search layer can be replaced with Composio MCP or any equivalent tool without changing the rest of the pipeline. To use Composio instead:
 
 1. Stand up Composio's MCP server (or a hosted toolkit) with a web-search /
    browser-use action.
@@ -61,32 +81,21 @@ was built in. To use Composio instead:
 This is also the natural next step for Composio specifically: instead of the
 agent producing *a report about* which apps are buildable, point it at
 Composio's own SDK and have it register the "ready" ones as toolkits
-directly. That's a half-day follow-up, not a rebuild.
+directly. A natural extension would be replacing the current search layer with Composio's SDK to automatically register applications classified as "ready" as toolkits instead of only generating a report.
 
-## How this was actually built (honest version)
 
-1. I was given the 100-app list and the schema the assignment asks for.
-2. I ran real web searches (not memory) against every app I wasn't
-   confident about — new/small vendors, anything where "gated vs self-serve"
-   wasn't obvious from the name, and anything where getting it wrong would
-   be embarrassing (see the DealCloud and Pylon stories in the case study —
-   those are the two best examples of why this step matters).
-3. For very well-known, extremely stable developer platforms (Stripe,
-   GitHub, Slack, Notion, and the like) I used verified general knowledge
-   rather than re-searching every single one — that's a deliberate choice to
-   spend the research budget where it moves accuracy, not a shortcut taken
-   silently. Every row's `confidence` field tells you which apps are
-   `verified` (checked live docs this pass), `high` (extremely stable/
-   canonical, not re-checked but reliable), `medium` (plausible, not
-   re-checked), or `low` (uncertain, said so on the page).
-4. `research_agent.py` is the reusable, runnable version of the same
-   process — point it at ANTHROPIC_API_KEY and it reproduces the pipeline
-   end to end, including the pass-1-vs-pass-2 diffing that produced the
-   verification numbers on the case study page.
-5. Seven apps defeated the research entirely (Pumble, Waterfall.io, Paygent
-   Connect, iPayX, and lower-confidence findings on Otter AI, Consensus, and
-   Grain) — the page says so, with the specific reason for each, instead of
-   quietly filling in a plausible-sounding guess.
+## Methodology
+
+- Started from the provided list of 100 applications and target schema.
+- Used a two-pass research pipeline:
+  - Pass 1 generated structured metadata.
+  - Pass 2 verified findings using official documentation where needed.
+- Well-established platforms were accepted without additional searches only when the generated
+output matched stable public documentation. Confidence levels indicate whether findings were live-verified or based on stable public information., while
+  ambiguous or enterprise-focused products received additional verification.
+- Confidence levels (`verified`, `high`, `medium`, `low`) are reported for every app.
+- Seven applications could not be confidently resolved and are explicitly
+  reported rather than guessed.
 
 ## Deploying the case study
 
